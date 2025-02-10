@@ -49,18 +49,55 @@ idempotent-api/
 │── src/
 │   ├── server.ts            # Express server
 │   ├── app.ts               # Express app (for testing)
-│   ├── routes/orderRoutes.ts # Order routes
-│   ├── controllers/orderController.ts # Order logic
-│   ├── services/orderService.ts  # Business logic
-│   ├── services/redisService.ts  # Redis service
-│   ├── types/order.ts       # TypeScript types
+│   ├── controllers/
+│   │   ├── orderController.ts # Order logic
+│   ├── middleware/
+│   │   ├── errorHandler.ts  # Global error handling
+│   │   ├── validator.ts     # Request validation
+│   │   ├── logger.ts        # Request logging
+│   ├── routes/
+│   │   ├── orderRoutes.ts   # Order routes
+│   ├── services/
+│   │   ├── orderService.ts  # Business logic
+│   │   ├── redisService.ts  # Redis service
+│   ├── types/
+│   │   ├── index.ts         # TypeScript interfaces
+│   │   ├── order.ts         # TypeScript types
+│   ├── utils/
+│   │   ├── errors.ts        # Custom error classes
 │── tests/
 │   ├── order.test.ts        # Unit tests
-│── tsconfig.json            # TypeScript config
+│── .env                     # Environment variables
 │── jest.config.ts           # Jest config
 │── package.json             # Dependencies
-│── .env                     # Environment variables
+│── tsconfig.json            # TypeScript config
 ```
+
+## 🔥 Features
+
+### Request Validation
+
+- Built-in request validation using Joi
+- Type-safe request handling
+- Automatic validation error responses
+
+### Error Handling
+
+- Centralized error handling
+- Custom error classes for different scenarios
+- Consistent error response format
+
+### Logging
+
+- Request/Response logging
+- Performance timing
+- HTTP status code tracking
+
+### Type Safety
+
+- TypeScript support
+- Interfaces for API responses
+- Type-safe error handling
 
 ---
 
@@ -69,7 +106,7 @@ idempotent-api/
 ### 1️⃣ Clone the repository
 
 ```sh
-git clone https://github.com/your-username/idempotent-api.git
+git clone https://github.com/ngopimas/idempotent-api.git
 cd idempotent-api
 ```
 
@@ -84,6 +121,8 @@ npm install
 ```sh
 PORT=3000
 REDIS_URL=redis://localhost:6379
+REDIS_HOST=localhost
+REDIS_PORT=6379
 ```
 
 Make sure you have Redis installed and running locally.
