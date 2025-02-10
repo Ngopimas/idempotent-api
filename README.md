@@ -65,6 +65,8 @@ idempotent-api/
 │   │   ├── order.ts         # TypeScript types
 │   ├── utils/
 │   │   ├── errors.ts        # Custom error classes
+│   ├── validations/
+│   │   ├── orderSchema.ts   # Order validation schemas
 │── tests/
 │   ├── order.test.ts        # Unit tests
 │── .env                     # Environment variables
