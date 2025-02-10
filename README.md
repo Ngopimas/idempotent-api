@@ -2,7 +2,16 @@
 
 ## 🚀 Overview
 
-This project is a **TypeScript-based Idempotent API** built using **Express, Redis, and Jest**. The API ensures that multiple identical requests with the same **Idempotency-Key** result in a single action being executed, preventing duplicate operations.
+This is a **demonstration project** showcasing how to implement an **Idempotent API** using TypeScript. Built with Express, Redis, and Jest, this project serves as an educational example of handling idempotency in API requests.
+
+## 🎯 Purpose
+
+This basic project illustrates:
+
+- How to implement idempotency using Redis as a storage mechanism
+- Proper handling of idempotency keys in API requests
+- Best practices for ensuring exactly-once semantics in API operations
+- Testing strategies for idempotent endpoints
 
 ## 📂 Project Structure
 

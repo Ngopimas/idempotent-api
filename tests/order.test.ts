@@ -1,20 +1,31 @@
 import request from "supertest";
 import { app } from "../src/app";
-import { createClient } from "redis-mock";
-
-const client = createClient();
+import {
+  initializeRedis,
+  closeRedis,
+  getRedisClient,
+} from "../src/services/redisService";
 
 beforeAll(async () => {
-  await client.connect();
-});
+  await initializeRedis();
+}, 30000);
 
 afterEach(async () => {
-  await client.flushAll();
+  try {
+    await getRedisClient().flushDb();
+  } catch (error) {
+    console.error("Error in afterEach:", error);
+  }
 });
 
 afterAll(async () => {
-  await client.quit();
-});
+  try {
+    await getRedisClient().flushDb();
+    await closeRedis();
+  } catch (error) {
+    console.error("Error in afterAll:", error);
+  }
+}, 30000);
 
 describe("Idempotent Order API", () => {
   test("should return 400 if Idempotency-Key is missing", async () => {
@@ -38,20 +49,22 @@ describe("Idempotent Order API", () => {
 
   test("should return the same order for duplicate Idempotency-Key", async () => {
     const orderData = { product: "Laptop", quantity: 1 };
+    const idempotencyKey = "test-key-123";
 
     const firstResponse = await request(app)
       .post("/orders")
-      .set("Idempotency-Key", "test-key-123")
+      .set("Idempotency-Key", idempotencyKey)
       .send(orderData);
 
     expect(firstResponse.status).toBe(201);
 
     const secondResponse = await request(app)
       .post("/orders")
-      .set("Idempotency-Key", "test-key-123")
+      .set("Idempotency-Key", idempotencyKey)
       .send(orderData);
 
     expect(secondResponse.status).toBe(200);
-    expect(secondResponse.body).toEqual(firstResponse.body);
+    expect(secondResponse.body.message).toBe("Order already processed");
+    expect(secondResponse.body.order).toEqual(firstResponse.body.order);
   });
 });
