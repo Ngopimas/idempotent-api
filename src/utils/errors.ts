@@ -11,3 +11,10 @@ export class DuplicateRequestError extends ApiError {
     this.name = "DuplicateRequestError";
   }
 }
+
+export class NotFoundError extends ApiError {
+  constructor(message: string = "Resource not found") {
+    super(404, message);
+    this.name = "NotFoundError";
+  }
+}

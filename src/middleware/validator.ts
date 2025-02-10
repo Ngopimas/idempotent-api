@@ -15,3 +15,12 @@ export const validateRequest = (schema: Joi.Schema) => {
     }
   };
 };
+
+export const validateOrder = validateRequest(
+  Joi.object({
+    body: Joi.object({
+      product: Joi.string().required(),
+      quantity: Joi.number().min(1).required(),
+    }),
+  })
+);
