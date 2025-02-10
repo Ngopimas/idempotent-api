@@ -4,6 +4,35 @@
 
 This is a **demonstration project** showcasing how to implement an **Idempotent API** using TypeScript. Built with Express, Redis, and Jest, this project serves as an educational example of handling idempotency in API requests.
 
+## 📄 Article: Understanding Idempotent APIs
+
+Idempotency is a crucial concept in API design, ensuring that multiple identical requests have the same effect as a single request. This is particularly important in scenarios where network issues or client retries might lead to duplicate requests.
+
+### What is Idempotency?
+
+Idempotency means that an operation can be performed multiple times without changing the result beyond the initial application. In the context of APIs, it ensures that making the same request multiple times will not have additional side effects.
+
+### Why is Idempotency Important?
+
+- **Prevents Duplicate Operations**: Ensures that operations like order creation or payment processing are not executed multiple times.
+- **Improves Reliability**: Helps in building reliable systems that can handle retries gracefully.
+- **Enhances User Experience**: Users can safely retry operations without worrying about unintended consequences.
+
+### How to Implement Idempotency?
+
+1. **Idempotency Key**: Clients generate a unique key for each request and send it in the request header.
+2. **Storage Mechanism**: Use a storage system like Redis to store and check idempotency keys.
+3. **Check and Process**: On receiving a request, check if the key exists. If it does, return the previous response; otherwise, process the request and store the key.
+
+### Example Workflow
+
+1. **Client** sends a POST request with an Idempotency-Key.
+2. **Server** checks if the key exists in Redis.
+   - If it exists, return the stored response.
+   - If it does not exist, process the request, store the key, and return the response.
+
+By following these principles, you can ensure that your API operations are idempotent, providing a more robust and user-friendly experience.
+
 ## 🎯 Purpose
 
 This basic project illustrates:

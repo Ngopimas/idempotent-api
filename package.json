@@ -16,11 +16,13 @@
   "dependencies": {
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "ioredis": "^5.5.0",
     "redis": "^4.7.0",
     "uuid": "^11.0.5"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
+    "@types/ioredis": "^4.28.10",
     "@types/jest": "^29.5.14",
     "@types/supertest": "^6.0.2",
     "@types/uuid": "^10.0.0",

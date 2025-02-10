@@ -1,48 +1,62 @@
-import { createClient, RedisClientType } from "redis";
+import Redis from "ioredis";
 
-let client: RedisClientType | null = null;
+let redis: Redis | null = null;
 
 export const initializeRedis = async () => {
-  if (client) {
-    return client;
+  if (redis) {
+    return redis;
   }
 
-  client = createClient({
-    url: process.env.REDIS_URL || "redis://localhost:6379",
-    socket: {
-      reconnectStrategy: (retries) => Math.min(retries * 50, 1000),
-    },
+  redis = new Redis({
+    host: process.env.REDIS_HOST || "localhost",
+    port: Number(process.env.REDIS_PORT) || 6379,
+    retryStrategy: (times) => Math.min(times * 50, 2000),
   });
 
-  client.on("error", (err) => console.error("Redis Client Error", err));
-
-  await client.connect();
-  return client;
+  redis.on("error", (err) => console.error("Redis Client Error", err));
+  return redis;
 };
 
 export const getRedisClient = () => {
-  if (!client) {
+  if (!redis) {
     throw new Error("Redis client not initialized");
   }
-  return client;
+  return redis;
 };
 
 export const closeRedis = async () => {
-  if (client) {
-    await client.disconnect();
-    client = null;
+  if (redis) {
+    await redis.quit();
+    redis = null;
   }
 };
 
 export const getOrderFromCache = async (
   key: string
 ): Promise<string | null> => {
-  return await getRedisClient().get(key);
+  return getRedisClient().get(key);
 };
 
 export const saveOrderToCache = async (
   key: string,
-  order: string
+  value: string
 ): Promise<void> => {
-  await getRedisClient().setEx(key, 600, order); // Expires in 10 min
+  await getRedisClient().set(key, value);
+};
+
+export const getAllFromCache = async (): Promise<string[]> => {
+  const redis = getRedisClient();
+  const keys = await redis.keys("order:*");
+  if (keys.length === 0) return [];
+
+  // Filter out any keys that contain "idempotency:"
+  const orderKeys = keys.filter((key) => !key.includes("idempotency:"));
+  if (orderKeys.length === 0) return [];
+
+  const values = await redis.mget(orderKeys);
+  return values.filter((value): value is string => value !== null);
+};
+
+export const deleteFromCache = async (key: string): Promise<void> => {
+  await getRedisClient().del(key);
 };
