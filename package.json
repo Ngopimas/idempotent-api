@@ -1,7 +1,7 @@
 {
   "name": "idempotent-api",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/server.js",
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit --testTimeout=30000",
     "test:watch": "jest --watch",
