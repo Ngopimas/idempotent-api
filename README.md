@@ -6,7 +6,7 @@ This is a **demonstration project** showcasing how to implement an **Idempotent 
 
 ## 📄 Article: Understanding Idempotent APIs
 
-For more detailed explanation, check out the accompanying article on [**romaincoupey.com**](https://www.romaincoupey.com/blog/idempotent-api-project).
+For more detailed explanation, check out the accompanying article on [**romaincoupey.com**](https://romaincoupey.com/posts/idempotent-api-project/).
 
 ## 🎯 Purpose
 
